@@ -1,0 +1,24 @@
+{
+  "name": "activitymonitor",
+  "version": "1.0.0",
+  "description": "A module that allows you to track the real time of user activity on the page",
+  "main": "dist/activity.js",
+  "types": "dist/activity.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "user",
+    "activity",
+    "analitycs"
+  ],
+  "author": "kayn23",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}
