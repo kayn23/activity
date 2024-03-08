@@ -1,42 +1,7 @@
-type CounterType = {
-  test: number;
-  achiev: number;
-};
+import { IConfig, CounterType } from "./types";
 
-export interface IConfig {
-  achieveTime: number; // default: 60, time expiration
-  callback: () => void;
-  /**
-   * default: 'activity'
-   */
-  cookieName: string;
-  /**
-   * default: false
-   */
-  forceStart?: boolean;
-  /**
-   * derault: false
-   */
-  loop?: boolean; // default: false
-  /**
-   * default: "touchmove blur focus focusin focusout load resize scroll unload click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup error"
-   **/
-  eventList?: string;
-  /**
-   * default: 10
-   */
-  testPeriod?: number;
-  /**
-   * default: false
-   */
-  useMultiMode?: boolean;
-  /**
-   * default: 1
-   */
-  watchEvery?: number;
-}
 export class Activity {
-  private defaultConfig: Required<IConfig> = {
+  defaultConfig: Required<IConfig> = {
     achieveTime: 60,
     callback: () => {
       console.log("Achieved!");
@@ -51,8 +16,8 @@ export class Activity {
     watchEvery: 1,
   };
   data: Required<IConfig>;
-  private counter: CounterType;
-  private eventFlag: boolean;
+  counter: CounterType;
+  eventFlag: boolean;
   constructor(initConfig: IConfig) {
     this.data = Object.assign({}, this.defaultConfig, initConfig);
     this.data.watchEvery *= 1000;
@@ -65,18 +30,19 @@ export class Activity {
     if (this.data.useMultiMode) {
       this.loadMultiData();
     }
+  }
 
+  init() {
     if (this.counter.achiev != -1 || this.data.forceStart) {
       this.bind(this.data.eventList, () => {
         this.eventTrigger();
       });
       if (this.data.forceStart) this.counter.achiev = 0;
+      console.log(`init activity ${this.data.cookieName}`);
       this.process();
     }
   }
-
-  public init() {}
-  private bind(eventList: string, fn: () => void) {
+  bind(eventList: string, fn: () => void) {
     const body = document.querySelector("body");
     const list = eventList.split(" ");
     if (body) {
@@ -87,10 +53,10 @@ export class Activity {
       throw new Error("body not found");
     }
   }
-  private eventTrigger() {
+  eventTrigger() {
     this.eventFlag = true;
   }
-  private loadMultiData() {
+  loadMultiData() {
     const cookieValue = this.getCookieValue(this.data.cookieName);
     if (cookieValue) {
       const value = cookieValue.split("|");
@@ -100,7 +66,7 @@ export class Activity {
     }
     this.counter.test = this.counter.achiev = 0;
   }
-  private process() {
+  process() {
     this.counter.test += 1;
     if (this.counter.test === this.data.testPeriod) {
       if (this.eventFlag) {
@@ -122,7 +88,7 @@ export class Activity {
     }
   }
 
-  private getCookieValue(name: string) {
+  getCookieValue(name: string) {
     const regex = new RegExp(`(^| )${name}=([^;]+)`);
     const match = document.cookie.match(regex);
     if (match) {

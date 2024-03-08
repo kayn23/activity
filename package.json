@@ -1,13 +1,13 @@
 {
   "name": "@kayn23/activitymonitor",
-  "version": "1.0.0",
+  "version": "1.0.13",
   "description": "A module that allows you to track the real time of user activity on the page",
   "repository": {
     "type": "git",
     "url": "https://github.com/kayn23/activity.git"
   },
-  "main": "dist/activity.js",
-  "types": "dist/activity.d.ts",
+  "main": "./dist/activity.js",
+  "types": "./dist/activity.d.ts",
   "type": "module",
   "files": [
     "dist"
